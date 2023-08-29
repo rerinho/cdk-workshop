@@ -7,6 +7,7 @@ module.exports = {
   },
   moduleNameMapper: {
     '@test/(.*)': '<rootDir>/test/$1',
-    '@lib/(.*)': '<rootDir>/lib/$1'
+    '@lib/(.*)': '<rootDir>/lib/$1',
+    '@lambda/(.*)': '<rootDir>/lambda/$1'
   }
 }
