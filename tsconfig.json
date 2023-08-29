@@ -21,6 +21,7 @@
     "paths": {
       "@bin/*": ["./bin/*"],
       "@lib/*": ["./lib/*"],
+      "@lambda/*": ["./lambda/*"],
       "@test/*": ["./test/*"]
     }
   },
