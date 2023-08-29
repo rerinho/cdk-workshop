@@ -1,17 +1,15 @@
-// import * as cdk from 'aws-cdk-lib';
-// import { Template } from 'aws-cdk-lib/assertions';
-// import * as CdkWorkshop from '../lib/cdk-workshop-stack';
+import { CdkWorkshopStack } from '@lib/cdk-workshop-stack'
+import * as cdk from 'aws-cdk-lib'
+import { Template } from 'aws-cdk-lib/assertions'
 
-// example test. To run these tests, uncomment this file along with the
-// example resource in lib/cdk-workshop-stack.ts
-test('SQS Queue Created', () => {
-//   const app = new cdk.App();
-//     // WHEN
-//   const stack = new CdkWorkshop.CdkWorkshopStack(app, 'MyTestStack');
-//     // THEN
-//   const template = Template.fromStack(stack);
+test('SQS Queue and SNS Topic Created', () => {
+  const app = new cdk.App()
+  const stack = new CdkWorkshopStack(app, 'MyTestStack')
 
-//   template.hasResourceProperties('AWS::SQS::Queue', {
-//     VisibilityTimeout: 300
-//   });
+  const template = Template.fromStack(stack)
+
+  template.hasResourceProperties('AWS::SQS::Queue', {
+    VisibilityTimeout: 300
+  })
+  template.resourceCountIs('AWS::SNS::Topic', 1)
 })
