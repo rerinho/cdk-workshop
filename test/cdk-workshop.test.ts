@@ -5,9 +5,7 @@ import { Runtime } from 'aws-cdk-lib/aws-lambda'
 
 describe('CdkWorkshopStack', () => {
   it('should initialize Hello LambdaFunction with correct properties', () => {
-    const app = new cdk.App()
-    const stack = new CdkWorkshopStack(app, 'CdkWorkshopStack')
-    const template = Template.fromStack(stack)
+    const template = makeStackTemplate()
 
     template.hasResourceProperties('AWS::Lambda::Function', {
       Handler: 'index.hello',
@@ -16,12 +14,16 @@ describe('CdkWorkshopStack', () => {
   })
 
   it('should initialize an APIGateway::RestApi resource for the Hello LambdaFunction', () => {
-    const app = new cdk.App()
-    const stack = new CdkWorkshopStack(app, 'CdkWorkshopStack')
-    const template = Template.fromStack(stack)
+    const template = makeStackTemplate()
 
     template.hasResourceProperties('AWS::ApiGateway::RestApi', {
       Name: 'HelloEndpoint'
     })
   })
 })
+
+const makeStackTemplate = (): Template => {
+  const app = new cdk.App()
+  const stack = new CdkWorkshopStack(app, 'CdkWorkshopStack')
+  return Template.fromStack(stack)
+}
