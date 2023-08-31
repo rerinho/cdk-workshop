@@ -1,5 +1,5 @@
 import { HitCounter } from '@lib/hitcounter'
-import { Template } from 'aws-cdk-lib/assertions'
+import { Match, Template } from 'aws-cdk-lib/assertions'
 import * as cdk from 'aws-cdk-lib'
 import * as lambda from 'aws-cdk-lib/aws-lambda'
 
@@ -12,6 +12,7 @@ describe('HitCounter', () => {
 
   it('should iniatilize a HitCounter LambdaFunction with correct values', () => {
     const template = makeStackTemplate()
+
     template.hasResourceProperties('AWS::Lambda::Function', {
       Handler: 'index.hitCounter',
       Environment: {
@@ -24,6 +25,22 @@ describe('HitCounter', () => {
           }
         }
       }
+    })
+  })
+
+  it('should grant Read/Write access to DynamoDb::Table for HitCounter LambdaFunction', () => {
+    const template = makeStackTemplate()
+
+    template.hasResourceProperties('AWS::IAM::Policy', {
+      PolicyDocument: {
+        Statement: Match.arrayWith([
+          Match.objectLike({
+            Action: Match.arrayWith(['dynamodb:Query', 'dynamodb:GetItem', 'dynamodb:PutItem']),
+            Effect: 'Allow'
+          })
+        ])
+      },
+      PolicyName: Match.stringLikeRegexp('HitCounter')
     })
   })
 })
