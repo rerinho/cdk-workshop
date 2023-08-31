@@ -5,6 +5,7 @@ import { type Construct } from 'constructs'
 import * as path from 'path'
 
 import * as apiGateway from 'aws-cdk-lib/aws-apigateway'
+import { HitCounter } from './hitcounter'
 
 export class CdkWorkshopStack extends cdk.Stack {
   constructor (scope: Construct, id: string, props?: cdk.StackProps) {
@@ -16,8 +17,12 @@ export class CdkWorkshopStack extends cdk.Stack {
       handler: 'hello'
     })
 
+    const helloHitCounter = new HitCounter(this, 'HelloHitCounter', {
+      downstream: hello
+    })
+
     new apiGateway.LambdaRestApi(this, 'HelloEndpoint', {
-      handler: hello
+      handler: helloHitCounter.handler
     })
   }
 }

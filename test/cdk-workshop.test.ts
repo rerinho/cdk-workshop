@@ -20,6 +20,14 @@ describe('CdkWorkshopStack', () => {
       Name: 'HelloEndpoint'
     })
   })
+
+  it('should initialize HitsCounter LambdaFunction', () => {
+    const template = makeStackTemplate()
+
+    template.hasResourceProperties('AWS::Lambda::Function', {
+      Handler: 'index.hitCounter'
+    })
+  })
 })
 
 const makeStackTemplate = (): Template => {
