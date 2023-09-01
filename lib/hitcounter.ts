@@ -10,6 +10,7 @@ export interface HitCounterProps {
 
 export class HitCounter extends Construct {
   public readonly handler: lambda.Function
+  public readonly table: dynamoDb.Table
 
   constructor (scope: Construct, id: string, props: HitCounterProps) {
     super(scope, id)
@@ -17,6 +18,7 @@ export class HitCounter extends Construct {
     const table = new dynamoDb.Table(this, 'Hits', {
       partitionKey: { name: 'path', type: dynamoDb.AttributeType.STRING }
     })
+    this.table = table
 
     this.handler = new NodejsFunction(this, 'HitCounterHandler', {
       entry: path.join(__dirname, '../lambda/hitcounter.ts'),

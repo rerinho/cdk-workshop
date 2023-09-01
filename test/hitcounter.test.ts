@@ -2,6 +2,7 @@ import { HitCounter } from '@lib/hitcounter'
 import { Match, Template } from 'aws-cdk-lib/assertions'
 import * as cdk from 'aws-cdk-lib'
 import * as lambda from 'aws-cdk-lib/aws-lambda'
+import * as dynamoDb from 'aws-cdk-lib/aws-dynamodb'
 
 describe('HitCounter', () => {
   it('should initialize a DyanmoDB::Table', () => {
@@ -58,6 +59,16 @@ describe('HitCounter', () => {
       },
       PolicyName: Match.stringLikeRegexp('HitCounter')
     })
+  })
+
+  it('should expose the created instance of DynamoDB::Table', () => {
+    const stack = new cdk.Stack()
+    const lambda = makeFakeLambda(stack)
+    const hitCounter = new HitCounter(stack, 'HitCounter', {
+      downstream: lambda
+    })
+
+    expect(hitCounter.table).toBeInstanceOf(dynamoDb.Table)
   })
 })
 
