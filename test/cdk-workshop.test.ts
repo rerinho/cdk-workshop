@@ -1,6 +1,6 @@
 import { CdkWorkshopStack } from '@lib/cdk-workshop-stack'
 import * as cdk from 'aws-cdk-lib'
-import { Template } from 'aws-cdk-lib/assertions'
+import { Match, Template } from 'aws-cdk-lib/assertions'
 import { Runtime } from 'aws-cdk-lib/aws-lambda'
 
 describe('CdkWorkshopStack', () => {
@@ -26,6 +26,19 @@ describe('CdkWorkshopStack', () => {
 
     template.hasResourceProperties('AWS::Lambda::Function', {
       Handler: 'index.hitCounter'
+    })
+  })
+
+  it('should initialize a TableViewer for HitsCounter Table', () => {
+    const template = makeStackTemplate()
+
+    template.hasResourceProperties('AWS::ApiGateway::RestApi', {
+      Name: 'ViewerEndpoint'
+    })
+    template.hasResourceProperties('AWS::ApiGateway::Deployment', {
+      RestApiId: {
+        Ref: Match.stringLikeRegexp('ViewHitCounterViewer')
+      }
     })
   })
 })
