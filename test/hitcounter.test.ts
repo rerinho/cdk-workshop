@@ -43,6 +43,22 @@ describe('HitCounter', () => {
       PolicyName: Match.stringLikeRegexp('HitCounter')
     })
   })
+
+  it('should grant downstream LambdaFunction invoke permission to HitCounter LambdaFunction', () => {
+    const template = makeStackTemplate()
+
+    template.hasResourceProperties('AWS::IAM::Policy', {
+      PolicyDocument: {
+        Statement: Match.arrayWith([
+          Match.objectLike({
+            Action: 'lambda:InvokeFunction',
+            Effect: 'Allow'
+          })
+        ])
+      },
+      PolicyName: Match.stringLikeRegexp('HitCounter')
+    })
+  })
 })
 
 const makeFakeLambda = (stack: cdk.Stack): lambda.Function => {
