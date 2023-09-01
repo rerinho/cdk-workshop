@@ -29,15 +29,17 @@ describe('CdkWorkshopStack', () => {
     })
   })
 
-  it('should initialize a TableViewer for HitsCounter Table', () => {
+  it('should initialize a TableViewer for HitsCounter Table with correct values', () => {
     const template = makeStackTemplate()
 
-    template.hasResourceProperties('AWS::ApiGateway::RestApi', {
-      Name: 'ViewerEndpoint'
-    })
-    template.hasResourceProperties('AWS::ApiGateway::Deployment', {
-      RestApiId: {
-        Ref: Match.stringLikeRegexp('ViewHitCounterViewer')
+    template.hasResourceProperties('AWS::Lambda::Function', {
+      Environment: {
+        Variables: {
+          TABLE_NAME: {
+            Ref: Match.stringLikeRegexp('HelloHitCounterHits')
+          },
+          SORT_BY: '-hits'
+        }
       }
     })
   })
