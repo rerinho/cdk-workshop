@@ -1,6 +1,6 @@
 import { CdkWorkshopStack } from '@lib/cdk-workshop-stack'
 import * as cdk from 'aws-cdk-lib'
-import { Match, Template } from 'aws-cdk-lib/assertions'
+import { Template } from 'aws-cdk-lib/assertions'
 import { Runtime } from 'aws-cdk-lib/aws-lambda'
 
 describe('CdkWorkshopStack', () => {
@@ -36,7 +36,7 @@ describe('CdkWorkshopStack', () => {
       Environment: {
         Variables: {
           TABLE_NAME: {
-            Ref: Match.stringLikeRegexp('HelloHitCounterHits')
+            Ref: 'HelloHitCounterHits7AAEBF80'
           },
           SORT_BY: '-hits'
         }
