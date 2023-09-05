@@ -8,7 +8,7 @@ import { HitCounter } from '../constructs/hitcounter'
 import { TableViewer } from 'cdk-dynamo-table-viewer'
 import { type Table } from 'aws-cdk-lib/aws-dynamodb'
 
-export class CdkWorkshopStack extends cdk.Stack {
+export class MainStack extends cdk.Stack {
   constructor (scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props)
     const helloLambda = this.createHelloLambda()

@@ -1,9 +1,9 @@
-import { CdkWorkshopStack } from '@lib/stacks/cdk-workshop-stack'
+import { MainStack } from '@lib/stacks/main-stack'
 import * as cdk from 'aws-cdk-lib'
 import { Template } from 'aws-cdk-lib/assertions'
 import { Runtime } from 'aws-cdk-lib/aws-lambda'
 
-describe('CdkWorkshopStack', () => {
+describe('Main Stack', () => {
   it('should initialize Hello LambdaFunction with correct properties', () => {
     const template = makeStackTemplate()
 
@@ -47,6 +47,6 @@ describe('CdkWorkshopStack', () => {
 
 const makeStackTemplate = (): Template => {
   const app = new cdk.App()
-  const stack = new CdkWorkshopStack(app, 'CdkWorkshopStack')
+  const stack = new MainStack(app, 'CdkWorkshopStack')
   return Template.fromStack(stack)
 }
