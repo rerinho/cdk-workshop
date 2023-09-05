@@ -14,19 +14,19 @@ export class HitCounter extends Construct {
 
   constructor (scope: Construct, id: string, private readonly props: HitCounterProps) {
     super(scope, id)
-    this.initializeTable()
-    this.initializeLambda()
+    this.table = this.initializeTable()
+    this.handler = this.initializeLambda()
     this.grantPermissions()
   }
 
-  private initializeTable (): void {
-    this.table = new dynamoDb.Table(this, 'Hits', {
+  private initializeTable (): dynamoDb.Table {
+    return new dynamoDb.Table(this, 'Hits', {
       partitionKey: { name: 'path', type: dynamoDb.AttributeType.STRING }
     })
   }
 
-  private initializeLambda (): void {
-    this.handler = new NodejsFunction(this, 'HitCounterHandler', {
+  private initializeLambda (): lambda.Function {
+    return new NodejsFunction(this, 'HitCounterHandler', {
       entry: path.join(__dirname, '../lambda/hitcounter.ts'),
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'hitCounter',
