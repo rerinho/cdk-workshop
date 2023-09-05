@@ -62,15 +62,26 @@ describe('HitCounter', () => {
   })
 
   it('should expose the created instance of DynamoDB::Table', () => {
-    const stack = new cdk.Stack()
-    const lambda = makeFakeLambda(stack)
-    const hitCounter = new HitCounter(stack, 'HitCounter', {
-      downstream: lambda
-    })
+    const { hitCounter } = makeHitCounterStack()
 
     expect(hitCounter.table).toBeInstanceOf(dynamoDb.Table)
   })
 })
+
+interface MakeHitCounterStackTypes {
+  hitCounter: HitCounter
+  stack: cdk.Stack
+}
+
+const makeHitCounterStack = (): MakeHitCounterStackTypes => {
+  const stack = new cdk.Stack()
+  const lambda = makeFakeLambda(stack)
+  const hitCounter = new HitCounter(stack, 'HitCounter', {
+    downstream: lambda
+  })
+
+  return { stack, hitCounter }
+}
 
 const makeFakeLambda = (stack: cdk.Stack): lambda.Function => {
   const fakeLambda = new lambda.Function(stack, 'FakeLambda', {
@@ -82,10 +93,6 @@ const makeFakeLambda = (stack: cdk.Stack): lambda.Function => {
 }
 
 const makeStackTemplate = (): Template => {
-  const stack = new cdk.Stack()
-  const lambda = makeFakeLambda(stack)
-  new HitCounter(stack, 'HitCounter', {
-    downstream: lambda
-  })
+  const { stack } = makeHitCounterStack()
   return Template.fromStack(stack)
 }
