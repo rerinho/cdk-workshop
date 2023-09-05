@@ -4,7 +4,7 @@ import * as apiGateway from 'aws-cdk-lib/aws-apigateway'
 import * as lambda from 'aws-cdk-lib/aws-lambda'
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs'
 import { type Construct } from 'constructs'
-import { HitCounter } from './hitcounter'
+import { HitCounter } from '../constructs/hitcounter'
 import { TableViewer } from 'cdk-dynamo-table-viewer'
 import { type Table } from 'aws-cdk-lib/aws-dynamodb'
 
@@ -19,7 +19,7 @@ export class CdkWorkshopStack extends cdk.Stack {
 
   private createHelloLambda (): lambda.Function {
     return new NodejsFunction(this, 'HelloHandler', {
-      entry: path.join(__dirname, '../lambda/hello.ts'),
+      entry: path.join(__dirname, '../../lambda/hello.ts'),
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'hello'
     })

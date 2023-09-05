@@ -1,4 +1,4 @@
-import { CdkWorkshopStack } from '@lib/cdk-workshop-stack'
+import { CdkWorkshopStack } from '@lib/stacks/cdk-workshop-stack'
 import * as cdk from 'aws-cdk-lib'
 import { Template } from 'aws-cdk-lib/assertions'
 import { Runtime } from 'aws-cdk-lib/aws-lambda'

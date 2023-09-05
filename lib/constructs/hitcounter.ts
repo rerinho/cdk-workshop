@@ -27,7 +27,7 @@ export class HitCounter extends Construct {
 
   private initializeLambda (): lambda.Function {
     return new NodejsFunction(this, 'HitCounterHandler', {
-      entry: path.join(__dirname, '../lambda/hitcounter.ts'),
+      entry: path.join(__dirname, '../../lambda/hitcounter.ts'),
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'hitCounter',
       environment: {

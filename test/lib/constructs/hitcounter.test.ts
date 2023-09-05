@@ -1,4 +1,4 @@
-import { HitCounter } from '@lib/hitcounter'
+import { HitCounter } from '@lib/constructs/hitcounter'
 import { Match, Template } from 'aws-cdk-lib/assertions'
 import * as cdk from 'aws-cdk-lib'
 import * as lambda from 'aws-cdk-lib/aws-lambda'
