@@ -9,28 +9,36 @@ export interface HitCounterProps {
 }
 
 export class HitCounter extends Construct {
-  public readonly handler: lambda.Function
-  public readonly table: dynamoDb.Table
+  public handler: lambda.Function
+  public table: dynamoDb.Table
 
-  constructor (scope: Construct, id: string, props: HitCounterProps) {
+  constructor (scope: Construct, id: string, private readonly props: HitCounterProps) {
     super(scope, id)
+    this.initializeTable()
+    this.initializeLambda()
+    this.grantPermissions()
+  }
 
-    const table = new dynamoDb.Table(this, 'Hits', {
+  private initializeTable (): void {
+    this.table = new dynamoDb.Table(this, 'Hits', {
       partitionKey: { name: 'path', type: dynamoDb.AttributeType.STRING }
     })
-    this.table = table
+  }
 
+  private initializeLambda (): void {
     this.handler = new NodejsFunction(this, 'HitCounterHandler', {
       entry: path.join(__dirname, '../lambda/hitcounter.ts'),
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'hitCounter',
       environment: {
-        DOWNSTREAM_FUNCTION_NAME: props.downstream.functionName,
-        HITS_TABLE_NAME: table.tableName
+        DOWNSTREAM_FUNCTION_NAME: this.props.downstream.functionName,
+        HITS_TABLE_NAME: this.table.tableName
       }
     })
+  }
 
-    table.grantReadWriteData(this.handler)
-    props.downstream.grantInvoke(this.handler)
+  private grantPermissions (): void {
+    this.table.grantReadWriteData(this.handler)
+    this.props.downstream.grantInvoke(this.handler)
   }
 }
