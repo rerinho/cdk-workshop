@@ -66,6 +66,16 @@ describe('HitCounter', () => {
 
     expect(hitCounter.table).toBeInstanceOf(dynamoDb.Table)
   })
+
+  test('should create the DynamoDB::Table with encryption', () => {
+    const template = makeStackTemplate()
+
+    template.hasResourceProperties('AWS::DynamoDB::Table', {
+      SSESpecification: {
+        SSEEnabled: true
+      }
+    })
+  })
 })
 
 interface MakeHitCounterStackTypes {

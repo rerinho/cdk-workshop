@@ -21,7 +21,8 @@ export class HitCounter extends Construct {
 
   private initializeTable (): dynamoDb.Table {
     return new dynamoDb.Table(this, 'Hits', {
-      partitionKey: { name: 'path', type: dynamoDb.AttributeType.STRING }
+      partitionKey: { name: 'path', type: dynamoDb.AttributeType.STRING },
+      encryption: dynamoDb.TableEncryption.AWS_MANAGED
     })
   }
 
